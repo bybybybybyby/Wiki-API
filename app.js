@@ -29,7 +29,9 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 
-app.get("/articles", function(req, res) {
+// Chained route handler
+app.route("/articles")
+.get(function(req, res) {
   Article.find( function(err, foundArticles) {
     if (!err) {
       res.send(foundArticles);
@@ -37,16 +39,13 @@ app.get("/articles", function(req, res) {
       res.send(err);
     }
   });
-});
-
-
-app.post("/articles", function(req, res) {
+})
+.post(function(req, res) {
     // Create an article with the "title" and "content" input from Postman
   const newArticle = new Article ({
     title: req.body.title,
     content: req.body.content
   });
-
   // Save the article to the mongo database
   // The function callback is used because Postman is waiting to receive response back
   newArticle.save(function(err) {
@@ -56,10 +55,8 @@ app.post("/articles", function(req, res) {
       res.send(err);
     }
   });
-});
-
-
-app.delete("/articles", function(req, res) {
+})
+.delete(function(req, res) {
   Article.deleteMany(function(err) {
     if (!err) {
       res.send("Successfully deleted all articles.");
@@ -68,6 +65,7 @@ app.delete("/articles", function(req, res) {
     }
   });
 });
+
 
 
 
