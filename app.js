@@ -41,7 +41,6 @@ app.get("/articles", function(req, res) {
 
 
 app.post("/articles", function(req, res) {
-
     // Create an article with the "title" and "content" input from Postman
   const newArticle = new Article ({
     title: req.body.title,
@@ -58,6 +57,18 @@ app.post("/articles", function(req, res) {
     }
   });
 });
+
+
+app.delete("/articles", function(req, res) {
+  Article.deleteMany(function(err) {
+    if (!err) {
+      res.send("Successfully deleted all articles.");
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 
 
 app.listen(3000, function() {
