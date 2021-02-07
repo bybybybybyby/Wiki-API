@@ -78,6 +78,37 @@ app.route("/articles/:articleTitle")
       res.send("No articles matching that title was found.");
     }
   });
+})
+// Updates/replaces entire article. Missing values will be empty
+.put(function(req, res) {
+//  Article.update(    // Decprecated .update() replaced with .replaceOne()
+  Article.replaceOne(
+    {title: req.params.articleTitle},  // Conditions
+    {title: req.body.title, content: req.body.content},  // Updates
+    // {overwrite: true},    // Not needed with .replaceOne()
+    function(err) {
+      if (!err) {
+        res.send("Successfully updated article.");
+      } else {
+        res.send(err);
+      }
+    }
+  );
+})
+// Only updates the specified values and leaves the others the same
+.patch(function(req, res) {
+  // Article.update(    // Deprecated method update()
+  Article.updateOne(
+    {title: req.params.articleTitle},    // Conditions
+    {$set: req.body},    // Updates
+    function(err) {
+      if (!err) {
+        res.send("Successfully patched article.")
+      } else {
+        res.send(err);
+      }
+    }
+  );
 });
 
 
