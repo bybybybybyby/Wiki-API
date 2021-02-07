@@ -29,10 +29,11 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 
+///////////// Requests targeting ALL Articles //////////////////
 // Chained route handler
 app.route("/articles")
 .get(function(req, res) {
-  Article.find( function(err, foundArticles) {
+  Article.find(function(err, foundArticles) {
     if (!err) {
       res.send(foundArticles);
     } else {
@@ -67,8 +68,52 @@ app.route("/articles")
 });
 
 
+//////////// Requests Targeting a Specific Article /////////////////
+app.route("/articles/:articleTitle")
+.get(function(req, res) {
+  Article.findOne({title: req.params.articleTitle}, function(err, foundArticle) {
+    if (foundArticle) {
+      res.send(foundArticle);
+    } else {
+      res.send("No articles matching that title was found.");
+    }
+  });
+});
+
+
+
+
+
+
 
 
 app.listen(3000, function() {
   console.log("Server running on port 3000");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
